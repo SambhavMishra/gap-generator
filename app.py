@@ -3,10 +3,13 @@ from stageOne import StageOne
 from stageTwo import StageTwo
 from stageThree import StageThree
 from fillTypes import fillTypes
+from weasyprint import HTML
 from preview import Preview
 import pandas as pd
 import ast
 import re 
+
+
 
 
 def createCheckbox(c, word, wordKeys,i):
@@ -161,6 +164,7 @@ elif st.session_state['page'] == 2:
 
     ft = fillTypes()
     result, gapper = ft.fill(options, content, gap_list, gaps)
+    st.session_state.result = result
 
     
 
@@ -183,3 +187,18 @@ if st.session_state['page'] == 3:
     Preview.render(st.session_state.title, st.session_state.report_text, st.session_state.report_gaps)
     st.write("&NewLine; &NewLine; &NewLine;", unsafe_allow_html=True)
     st.button("Previous", on_click=prev_page)
+
+
+    title = st.session_state.title + "<br/><br/>"
+    html_content = title + st.session_state.result
+
+    
+
+    with open("gap_html.html", "wb") as file:
+        file.write(html_content.encode('utf-8'))
+    file.close() 
+
+
+
+    pdf_file = HTML(string=html_content).write_pdf()
+    st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")

@@ -20,7 +20,7 @@ class Preview:
             """
         st.markdown(header, unsafe_allow_html=True)
         st.write(title)
-        
+        # st.write(text)
         if len(gaps) > 0:
             st.write("&NewLine;" + gaps + "&NewLine;")
         st.write(text, unsafe_allow_html=True)

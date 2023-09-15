@@ -169,19 +169,20 @@ class fillTypes:
             contents = file_.read()
             data_url = base64.b64encode(contents).decode("utf-8")
             file_.close()
-            space = "&nbsp;"
-            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="80px" style="display:inline;"/> {space*numBoxes*11}<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="80px" style="display: inline;"/> <br/><br/>'
+            space = '<span style="display:inline; margin-left:4px;"></span>'
+            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display:inline;"/> {space*(numBoxes*5)}<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display: inline;"/> <br/><br/>'
 
             res += markers
 
-            res += f"{space*16}Roll No.: " + f'<span style="font-size: 24px; border: 1px solid black; display: inline;">{space*6}</span>'*2 + " <br/>"
+            res += f"{space*6}Roll No.: " + f'<span style="font-size: 24px; border: 1px solid black; display: inline;">{space*6}</span>'*2 + " <br/>"
 
             for char in charList:
-                res += f'<br/> {space*16} {char} &nbsp;&nbsp;&nbsp;&nbsp;' +  f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'*numBoxes 
+                res += f'<br/><br/> {space*4} {char} {space*4}' +  f'<span style="font-size: 24px; border: 1px solid black; display: inline;">{space*6}</span>'*numBoxes 
 
             res += '<br/><br/>' + markers
 
             result = res 
+
 
             
 
