@@ -1,8 +1,12 @@
 import streamlit as st 
+import random 
+import base64
 class fillTypes:
+
 
     @staticmethod 
     def fill(options, content, gap_list, gaps):
+
         gapper = []
         if options == 'Show words':
             res = 'Student Name: _________________________________ <br/>'
@@ -155,13 +159,29 @@ class fillTypes:
                     res += " " + i 
             numBoxes = max([len(i) for i in gap_list])
             res += " <br/>" 
+            shuffler = gap_list.copy()
+            random.shuffle(shuffler)
+            shuffler = ', '.join(shuffler)
+            res += shuffler + "<br/>"
+
+            file_ = open("omr_marker.jpg", "rb")
+            contents = file_.read()
+            data_url = base64.b64encode(contents).decode("utf-8")
+            file_.close()
+
+            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="80px" style="display:inline;"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="80px" style="display: inline;"/> <br/><br/>'
+
+            res += markers
+
             res += "Roll No.: " + f'<p style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'*2 + " <br/>"
 
             for char in charList:
                 res += f'<br/> {char} &nbsp;&nbsp;&nbsp;&nbsp;' +  f'<p style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'*numBoxes 
 
+            res += '<br/><br/>' + markers
+
             result = res 
-            gapper = []
+
             
 
         return result, gapper
