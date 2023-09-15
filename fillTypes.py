@@ -1,6 +1,7 @@
 import streamlit as st 
 import random 
 import base64
+
 class fillTypes:
 
 
@@ -152,7 +153,7 @@ class fillTypes:
             charList = []
             for i in content.split(" "):
                 if i == "_"*10:
-                    res += ' '+ f'<p style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;{chr(character)}&nbsp;</p>' + ' '
+                    res += ' '+ f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;{chr(character)}&nbsp;</span>' + ' '
                     charList.append(chr(character))
                     character += 1
                 else:
@@ -173,10 +174,10 @@ class fillTypes:
 
             res += markers
 
-            res += "Roll No.: " + f'<p style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'*2 + " <br/>"
+            res += "Roll No.: " + f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'*2 + " <br/>"
 
             for char in charList:
-                res += f'<br/> {char} &nbsp;&nbsp;&nbsp;&nbsp;' +  f'<p style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>'*numBoxes 
+                res += f'<br/> {char} &nbsp;&nbsp;&nbsp;&nbsp;' +  f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'*numBoxes 
 
             res += '<br/><br/>' + markers
 

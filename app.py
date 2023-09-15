@@ -6,6 +6,7 @@ from fillTypes import fillTypes
 from preview import Preview
 import pandas as pd
 import ast
+import re 
 
 
 def createCheckbox(c, word, wordKeys,i):
@@ -83,7 +84,7 @@ if st.session_state.page == 0:
     title = st.text_input("title")
     text = st.text_area("text")
     st.session_state.title = title 
-    st.session_state.text = text 
+    st.session_state.text =  re.sub(r'[,.!?]', '', text)
     st.button("Next", on_click=next_page)
 
 

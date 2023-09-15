@@ -20,8 +20,7 @@ class Preview:
             """
         st.markdown(header, unsafe_allow_html=True)
         st.write(title)
-        # st.write("Student Name: _________________________________")
-        # st.write("Student Roll No.: ________________________________")
+        
         if len(gaps) > 0:
             st.write("&NewLine;" + gaps + "&NewLine;")
         st.write(text, unsafe_allow_html=True)
