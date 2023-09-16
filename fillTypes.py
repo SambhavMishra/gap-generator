@@ -159,11 +159,11 @@ class fillTypes:
                 else:
                     res += " " + i 
             numBoxes = max([len(i) for i in gap_list])
-            res += " <br/>" 
+            res += " <br/><br/>" 
             shuffler = gap_list.copy()
             random.shuffle(shuffler)
             shuffler = ', '.join(shuffler)
-            res += shuffler + "<br/>"
+            res += shuffler + "<br/><br/>"
 
             file_ = open("omr_marker.jpg", "rb")
             contents = file_.read()
