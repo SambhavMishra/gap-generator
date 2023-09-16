@@ -3,11 +3,12 @@ from stageOne import StageOne
 from stageTwo import StageTwo
 from stageThree import StageThree
 from fillTypes import fillTypes
-from weasyprint import HTML
+# from weasyprint import HTML
 from preview import Preview
 import pandas as pd
 import ast
 import re 
+
 
 
 
@@ -194,11 +195,9 @@ if st.session_state['page'] == 3:
 
     
 
-    with open("gap_html.html", "wb") as file:
-        file.write(html_content.encode('utf-8'))
-    file.close() 
+    # with open("gap_html.html", "wb") as file:
+    #     file.write(html_content.encode('utf-8'))
+    # file.close() 
 
-
-
-    pdf_file = HTML(string=html_content).write_pdf()
-    st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
+    # pdf_file = HTML(string=html_content).write_pdf()
+    # st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")

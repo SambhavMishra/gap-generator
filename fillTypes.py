@@ -170,7 +170,7 @@ class fillTypes:
             data_url = base64.b64encode(contents).decode("utf-8")
             file_.close()
             space = '<span style="display:inline; margin-left:4px;"></span>'
-            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display:inline;"/> {space*(numBoxes*5)}<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display: inline;"/> <br/><br/>'
+            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display:inline;"/> {space*(numBoxes*6)}<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display: inline;"/> <br/><br/>'
 
             res += markers
 
