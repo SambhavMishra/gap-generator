@@ -1,12 +1,36 @@
 import streamlit as st 
 import random 
 import base64
+from boxes import box_and_bound
+
 
 class fillTypes:
 
 
     @staticmethod 
-    def fill(options, content, gap_list, gaps):
+    def fill(options, content, gap_list, gaps, mcqs):
+
+        def createCheckbox(c, word, wordKeys,i):
+            if c % 5 == 0:
+                with col1:
+                    st.checkbox(word, key=wordKeys[f"{i}"])
+                    st.session_state.keys_selected.append(i)
+            elif c % 5 == 1:
+                with col2:
+                    st.checkbox(word, key=wordKeys[f"{i}"])
+                    st.session_state.keys_selected.append(i)
+            elif c % 5 == 2:
+                with col3:
+                    st.checkbox(word, key=wordKeys[f"{i}"])
+                    st.session_state.keys_selected.append(i)
+            elif c % 5 == 3:
+                with col4:
+                    st.checkbox(word, key=wordKeys[f"{i}"])
+                    st.session_state.keys_selected.append(i)
+            else:
+                with col5:
+                    st.checkbox(word, key=wordKeys[f"{i}"])
+                    st.session_state.keys_selected.append(i)
 
         gapper = []
         if options == 'Show words':
@@ -147,43 +171,11 @@ class fillTypes:
             gapper = []
 
         if options == "Box and Bounded":
-            res = ''
-            idx = 0
-            character = ord('A')
-            charList = []
-            for i in content.split(" "):
-                if i == "_"*10:
-                    res += ' '+ f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;{chr(character)}&nbsp;</span>' + ' '
-                    charList.append(chr(character))
-                    character += 1
-                else:
-                    res += " " + i 
-            numBoxes = max([len(i) for i in gap_list])
-            res += " <br/><br/>" 
-            shuffler = gap_list.copy()
-            random.shuffle(shuffler)
-            shuffler = ', '.join(shuffler)
-            res += shuffler + "<br/><br/>"
+            box = box_and_bound() 
+            result = box.create_boxes(content, gap_list)
 
-            file_ = open("omr_marker.jpg", "rb")
-            contents = file_.read()
-            data_url = base64.b64encode(contents).decode("utf-8")
-            file_.close()
-            space = '<span style="display:inline; margin-left:4px;"></span>'
-            markers = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display:inline;"/> {space*(numBoxes*6)}<img src="data:image/gif;base64,{data_url}"  alt="omr marker" width="40px" style="display: inline;"/> <br/><br/>'
-
-            res += markers
-
-            res += f"{space*6}Roll No.: " + f'<span style="font-size: 24px; border: 1px solid black; display: inline;">{space*6}</span>'*2 + " <br/>"
-
-            for char in charList:
-                res += f'<br/><br/> {space*4} {char} {space*4}' +  f'<span style="font-size: 24px; border: 1px solid black; display: inline;">{space*6}</span>'*numBoxes 
-
-            res += '<br/><br/>' + markers
-
-            result = res 
-
-
-            
+        if options == "OMR Friendly Boxes":
+            box = box_and_bound()
+            result = box.create_omr_boxes(content, gap_list, mcqs)
 
         return result, gapper
