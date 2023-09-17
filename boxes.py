@@ -70,6 +70,9 @@ class box_and_bound():
 
         res += f'<table border="0">{row(sentence,"letter")}{row(sentence,"blank")}</table>'
 
+
+
+
         file_ = open("static_image_omr.png", "rb")
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
@@ -77,24 +80,30 @@ class box_and_bound():
         static_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:inline;"/><br/><br/>'
         res += static_image
 
-        character = ord('1')
+        character = 1
         charList = []
+
 
 
 
         ques = ''
         for i in content.split(" "):
             if i == "_"*10:
-                ques += ' '+ f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;{chr(character)}&nbsp;</span>' + ' '
-                charList.append(chr(character))
+                ques += ' '+ f'<span style="font-size: 24px; border: 1px solid black; display: inline;">&nbsp;{str(character)}&nbsp;</span>' + ' '
+                charList.append(str(character))
                 character += 1
             else:
                 ques += " " + i 
 
-        omrs = ''
-        for ch in charList:
-            line = f'<br/>{ch}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p>'
+        rows = len(mcqs) // 3 + 1 
+
+
+        omrs = '<table border=none>'
+        for ch in range(0,len(mcqs),2):
+            line = f'<tr><td>{ch+1}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td><td>{ch+2}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td><td>{ch+3}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td></tr>'
             omrs += line
+
+        omrs += "</table>"
         res += omrs + "<br/><br/>"
 
         res +=ques 
@@ -103,11 +112,12 @@ class box_and_bound():
         for i in mcqs.keys():
             choices.append([i] + mcqs[i])
 
+
         mcq_section = ''
-        for num in choices: 
+        for i, num in enumerate(choices): 
             number = num.copy()
             random.shuffle(number)
-            line = f'<br/>(a){number[0]}{space}(b){number[1]}{space}(c){number[2]}{space}(d){number[3]}{space}(e){number[4]}{space}'
+            line = f'<br/>{str(i+1)}{space}(a){number[0]}{space}(b){number[1]}{space}(c){number[2]}{space}(d){number[3]}{space}(e){number[4]}{space}'
             mcq_section += line
 
         res += "<br/>" + mcq_section

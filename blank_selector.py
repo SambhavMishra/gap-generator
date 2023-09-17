@@ -64,11 +64,20 @@ class blank_selector():
         st.write("Tip: you only need to enter more options if you want to create omr sheet.") 
         st.write("Tip: You need to enter 4 options for each selections.")
         mcq_questions = [(st.session_state.words[i], st.session_state.blanks[i]) for i in range(len(st.session_state.blanks))]
+        repeats = {}
         mcqs = {}
-        for i in mcq_questions:
+        for j,i in enumerate(mcq_questions):
             if i[1]:
-                choices = st.text_input(f"Enter more options for {i[0]} (seperated by comma)", key=f"mcq_{i}")
-                mcqs[i[0]] = choices.split(",")
+                choices = st.text_input(f"Enter more options for {i[0]} (seperated by comma)", key=f"mcq_{j}")
+                ch = ''
+                if i[0] in repeats:
+                    repeats[i[0]] += 1
+                    ch = f'{i[0]}_{repeats[i[0]]}'
+                else:
+                    repeats[i[0]] = 1
+                    ch = f'{i[0]}_{repeats[i[0]]}'
+
+                mcqs[ch] = [i[0]] + choices.split(",")
 
         st.session_state.mcqs = mcqs 
 

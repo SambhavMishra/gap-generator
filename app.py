@@ -93,10 +93,7 @@ elif st.session_state['page'] == 2:
 
     gap_list = ast.literal_eval(df['gap'].iloc[0])
 
-
     result = ''
-
-    
     gaps = ' '.join(gap_list)
 
     stage3 = StageThree()
