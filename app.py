@@ -4,7 +4,7 @@ from stageTwo import StageTwo
 from stageThree import StageThree
 from fillTypes import fillTypes
 from blank_selector import blank_selector
-from weasyprint import HTML
+# from weasyprint import HTML
 from preview import Preview
 import pandas as pd
 import ast
@@ -127,16 +127,16 @@ if st.session_state['page'] == 3:
     st.button("Previous", on_click=prev_page)
 
 
-    title = st.session_state.title + "<br/><br/>"
-    html_content = title + st.session_state.result
+    # title = st.session_state.title + "<br/><br/>"
+    # html_content = title + st.session_state.result
 
 
-    with open("gap_html.html", "wb") as file:
-        file.write(html_content.encode('utf-8'))
-    file.close() 
+    # with open("gap_html.html", "wb") as file:
+    #     file.write(html_content.encode('utf-8'))
+    # file.close() 
 
-    pdf_file = HTML(string=html_content).write_pdf()
-    st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
+    # pdf_file = HTML(string=html_content).write_pdf()
+    # st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
 
     df = st.session_state.correct_options
 
