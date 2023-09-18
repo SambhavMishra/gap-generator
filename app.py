@@ -4,7 +4,7 @@ from stageTwo import StageTwo
 from stageThree import StageThree
 from fillTypes import fillTypes
 from blank_selector import blank_selector
-# from weasyprint import HTML
+from weasyprint import HTML
 from preview import Preview
 import pandas as pd
 import ast
@@ -103,8 +103,9 @@ elif st.session_state['page'] == 2:
     st.write("Settings and preview")
 
     ft = fillTypes()
-    mcqs = st.session_state.mcqs
-    result, gapper = ft.fill(options, content, gap_list, gaps, mcqs)
+    # mcqs = st.session_state.mcqs
+    extra_words = st.session_state.extra_words
+    result, gapper = ft.fill(options, content, gap_list, gaps, extra_words)
     st.session_state.result = result
 
 
@@ -126,28 +127,18 @@ if st.session_state['page'] == 3:
     st.button("Previous", on_click=prev_page)
 
 
-    # title = st.session_state.title + "<br/><br/>"
-    # html_content = title + st.session_state.result
+    title = st.session_state.title + "<br/><br/>"
+    html_content = title + st.session_state.result
 
 
-    # with open("gap_html.html", "wb") as file:
-    #     file.write(html_content.encode('utf-8'))
-    # file.close() 
+    with open("gap_html.html", "wb") as file:
+        file.write(html_content.encode('utf-8'))
+    file.close() 
 
-    # pdf_file = HTML(string=html_content).write_pdf()
-    # st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
+    pdf_file = HTML(string=html_content).write_pdf()
+    st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
 
-    df = {
-        'question': [],
-        'answer': []
-    }
-
-    mcqs = st.session_state.mcqs 
-    questions = list(mcqs.keys())
-    # st.write(questions)
-    for i in range(len(questions)):
-        df['question'].append(i+1)
-        df['answer'].append(questions[i])
+    df = st.session_state.correct_options
 
     df = pd.DataFrame(df)
 
@@ -158,5 +149,5 @@ if st.session_state['page'] == 3:
         b64 = base64.b64encode(csv.encode()).decode()
         href = f'<button style="border:1px solid #909090; border-radius: 5px; font-size:24px; background-color: white;"><a href="data:file/csv;base64,{b64}" download="data.csv" style="text-decoration: none;">Download CSV</a></button>'
         st.markdown(href, unsafe_allow_html=True)
-    if len(mcqs) > 0:
+    if len(df) > 0:
         download_csv(df)

@@ -8,7 +8,7 @@ class fillTypes:
 
 
     @staticmethod 
-    def fill(options, content, gap_list, gaps, mcqs):
+    def fill(options, content, gap_list, gaps, extra_words):
 
         def createCheckbox(c, word, wordKeys,i):
             if c % 5 == 0:
@@ -176,6 +176,6 @@ class fillTypes:
 
         if options == "OMR Friendly Boxes":
             box = box_and_bound()
-            result = box.create_omr_boxes(content, gap_list, mcqs)
+            result = box.create_omr_boxes(content, gap_list, extra_words)
 
         return result, gapper

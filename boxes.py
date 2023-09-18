@@ -1,6 +1,7 @@
 import random
 import streamlit as st 
 import base64
+import streamlit as st 
 class box_and_bound():
     @staticmethod
     def create_boxes(content, gap_list):
@@ -44,12 +45,21 @@ class box_and_bound():
 
 
     @staticmethod
-    def create_omr_boxes(content, gap_list, mcqs):
+    def create_omr_boxes(content, gap_list, extra_words):
+        mcqs = set(extra_words + gap_list)
+        mcqs = list(mcqs)
+        opts = mcqs.copy()
+        random.shuffle(opts)
+        correct_options = {
+            'question': [],
+            'answer': []
+        }
+
         res = '' 
         res += 'Please write this in below boxes exactly as shown here. "THE FIVE BOXING WIZARDS JUMP QUICKLY" (in capital letters)'
 
         sentence = "THE FIVE BOXING WIZARDS JUMP QUICKLY"
-        space = '<span style="display:inline; margin-left:4px;"></span>'
+        space = '<span style="display:inline; margin-left:6px;"></span>'
 
         res += f'<br/><br/> {space*4} {space*4}'
 
@@ -57,7 +67,7 @@ class box_and_bound():
             if type == 'letter':
                 string = '<tr>'
                 for i in sentence:
-                    string += f'<td style="border: none;">{i}</td>'
+                    string += f'<td style="border: none; text-align:center;">&nbsp;{i}</td>'
                 string +=  '</tr>'
 
             if type == 'blank':
@@ -73,17 +83,15 @@ class box_and_bound():
 
 
 
-        file_ = open("static_image_omr.png", "rb")
+        file_ = open("static_image_omr_cropped.png", "rb")
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
-        static_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:inline;"/><br/><br/>'
+        static_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:inline;"/>'
         res += static_image
 
         character = 1
         charList = []
-
-
 
 
         ques = ''
@@ -97,10 +105,22 @@ class box_and_bound():
 
         rows = len(mcqs) // 3 + 1 
 
+        def table_data(quest):
+            if quest > len(mcqs):
+                return f'{space}'
+            else:
+                line = f'<td>{quest}{space}'
+                char = ord('a')
+                for i in range(len(mcqs)):
+                    l = f'<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}{chr(char+i)}{space}</p>'
+                    line += l 
+                line += '</td>'
+                return line
+
 
         omrs = '<table border=none>'
         for ch in range(0,len(mcqs),2):
-            line = f'<tr><td>{ch+1}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td><td>{ch+2}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td><td>{ch+3}{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}a{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}b{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}c{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}d{space}</p>{space}<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}e{space}</p></td></tr>'
+            line = f'<tr>{table_data(ch+1)}{table_data(ch+2)}{table_data(ch+3)}</tr>'
             omrs += line
 
         omrs += "</table>"
@@ -108,23 +128,25 @@ class box_and_bound():
 
         res +=ques 
 
-        choices = []
-        for i in mcqs.keys():
-            choices.append([i] + mcqs[i])
 
-
-        mcq_section = ''
-        for i, num in enumerate(choices): 
-            number = num.copy()
-            random.shuffle(number)
-            line = f'<br/>{str(i+1)}{space}(a){number[0]}{space}(b){number[1]}{space}(c){number[2]}{space}(d){number[3]}{space}(e){number[4]}{space}'
-            mcq_section += line
+        char = ord('a')
+        mcq_section = '<br/>' 
+        mcqs = list(mcqs)
+        for i in range(len(mcqs)):
+            mcq_section += f'({chr(char)}){mcqs[i].upper()}{space}'
+            char += 1
 
         res += "<br/>" + mcq_section
 
-        res += "<br/><br/>"
 
-        res += f'<br/>{",".join(gap_list).upper()}</br>'
+        for i in range(len(gap_list)):
+            for j in range(len(opts)):
+                if opts[j] == gap_list[i]:
+                    correct_options['question'].append(f'q{i+1}')
+                    correct_options['answer'].append(chr(ord('a') + j))
+        st.session_state.correct_options = correct_options
+
+
+        res += "<br/><br/>" 
         result = res
-
         return result
