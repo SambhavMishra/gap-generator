@@ -55,11 +55,22 @@ class box_and_bound():
             'answer': []
         }
 
+
         res = '' 
+        space = '<span style="display:inline; margin-left:6px;"></span>'
+
+        
+        file_ = open("two_sided_omr.png", "rb")
+        contents = file_.read()
+        data_url = base64.b64encode(contents).decode("utf-8")
+        file_.close()
+        omr_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:block; height:70px; width: 95%;"/>'
+        res += omr_image
+
+
         res += 'Please write this in below boxes exactly as shown here. "THE FIVE BOXING WIZARDS JUMP QUICKLY" (in capital letters)'
 
         sentence = "THE FIVE BOXING WIZARDS JUMP QUICKLY"
-        space = '<span style="display:inline; margin-left:6px;"></span>'
 
         res += f'<br/><br/> {space*4} {space*4}'
 
@@ -67,7 +78,7 @@ class box_and_bound():
             if type == 'letter':
                 string = '<tr>'
                 for i in sentence:
-                    string += f'<td style="border: none; text-align:center;">&nbsp;{i}</td>'
+                    string += f'<td style="border: none;">{i}</td>'
                 string +=  '</tr>'
 
             if type == 'blank':
@@ -103,7 +114,6 @@ class box_and_bound():
             else:
                 ques += " " + i 
 
-        rows = len(mcqs) // 3 + 1 
 
         def table_data(quest):
             if quest > len(mcqs):
@@ -119,25 +129,27 @@ class box_and_bound():
 
 
         omrs = '<table border=none>'
-        for ch in range(0,len(mcqs),2):
+        for ch in range(0,len(mcqs),3):
             line = f'<tr>{table_data(ch+1)}{table_data(ch+2)}{table_data(ch+3)}</tr>'
             omrs += line
 
         omrs += "</table>"
         res += omrs + "<br/><br/>"
 
+        res += omr_image
+
         res +=ques 
+
 
 
         char = ord('a')
         mcq_section = '<br/>' 
         mcqs = list(mcqs)
         for i in range(len(mcqs)):
-            mcq_section += f'({chr(char)}){mcqs[i].upper()}{space}'
+            mcq_section += f'({chr(char)}){mcqs[i].upper()}'
             char += 1
 
         res += "<br/>" + mcq_section
-
 
         for i in range(len(gap_list)):
             for j in range(len(opts)):
@@ -146,7 +158,5 @@ class box_and_bound():
                     correct_options['answer'].append(chr(ord('a') + j))
         st.session_state.correct_options = correct_options
 
-
-        res += "<br/><br/>" 
         result = res
         return result
