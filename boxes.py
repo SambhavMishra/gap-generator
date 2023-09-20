@@ -64,7 +64,7 @@ class box_and_bound():
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
-        omr_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:block; height:70px; width: 95%;"/>'
+        omr_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:block; height:70px; width: 110%; margin-left: -5%;"/>'
         res += omr_image
 
 
@@ -116,7 +116,7 @@ class box_and_bound():
 
 
         def table_data(quest):
-            if quest > len(mcqs):
+            if quest > len(mcqs)+1:
                 return f'{space}'
             else:
                 line = f'<td>{quest}{space}'
