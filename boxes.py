@@ -22,7 +22,7 @@ class box_and_bound():
         shuffler = ', '.join(shuffler)
         res += shuffler + "<br/><br/>"
 
-        file_ = open("omr_marker.jpg", "rb")
+        file_ = open("images/omr_marker.jpg", "rb")
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
@@ -60,7 +60,7 @@ class box_and_bound():
         space = '<span style="display:inline; margin-left:6px;"></span>'
 
         
-        file_ = open("two_sided_omr.png", "rb")
+        file_ = open("images/two_sided_omr.png", "rb")
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
@@ -94,7 +94,7 @@ class box_and_bound():
 
 
 
-        file_ = open("static_image_omr_cropped.png", "rb")
+        file_ = open("images/static_image_omr_cropped.png", "rb")
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
