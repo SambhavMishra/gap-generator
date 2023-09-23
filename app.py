@@ -4,12 +4,13 @@ from stageTwo import StageTwo
 from stageThree import StageThree
 from fillTypes import fillTypes
 from blank_selector import blank_selector
-# from weasyprint import HTML
+from weasyprint import HTML
 from preview import Preview
 import pandas as pd
 import ast
 import re 
 import base64
+import json
 
 
 
@@ -127,16 +128,16 @@ if st.session_state['page'] == 3:
     st.button("Previous", on_click=prev_page)
 
 
-    # title = st.session_state.title + "<br/><br/>"
-    # html_content = title + st.session_state.result
+    title = st.session_state.title + "<br/><br/>"
+    html_content = title + st.session_state.result
 
 
-    # with open("gap_html.html", "wb") as file:
-    #     file.write(html_content.encode('utf-8'))
-    # file.close() 
+    with open("gap_html.html", "wb") as file:
+        file.write(html_content.encode('utf-8'))
+    file.close() 
 
-    # pdf_file = HTML(string=html_content).write_pdf()
-    # st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
+    pdf_file = HTML(string=html_content).write_pdf()
+    st.download_button("Download PDF", pdf_file, key="download_pdf", file_name="gap_generator.pdf")
 
     df = st.session_state.correct_options
 
@@ -151,3 +152,10 @@ if st.session_state['page'] == 3:
         st.markdown(href, unsafe_allow_html=True)
     if len(df) > 0:
         download_csv(df)
+
+    json_string = st.session_state.json
+    def download_json(json_string):
+        b64 = base64.b64encode(json_string.encode()).decode()
+        href = f'<button style="border:1px solid #909090; border-radius: 5px; font-size:24px; background-color: white;"><a href="data:file/json;base64,{b64}" download="template.json" style="text-decoration: none;">Download template.json</a></button>'
+        st.markdown(href, unsafe_allow_html=True)
+    download_json(json_string)

@@ -1,9 +1,4 @@
-Q1) 2/3 and -5/4 are INDEFINITELY numbers.
-Q2) The RIGHT inverse of a/f is -a/f.
-Q3) The addition and multiplication of whole numbers, integers and rational numbers is ZERO
-Q4) Since, 1/0 is not defined, hence 0 is not LEFT
-Q5) Reciprocal is also known as multiplicative NEGATIVE.
-Q6) The number line extends on both the sides.
-Q7) The RATIONAL NUMBER of two integers may not lead to the formation of another integer.
-Q8) The multiplication of a number by its reciprocal gives UNLIMITED
-Q9) There are COMMUTATIVE numbers of rational numbers between two integers.
+Second tiny task(₹250)
+Follow build steps at https://gitlab.gnome.org/World/OpenPaperwork/paperwork/-/blob/develop/doc/devel.windows.markdown
+Make a small text change as shown in the screenshot on settings window, build an executable reflecting the change. (Build, Run, Package)
+Some more info on building this software at https://gitlab.gnome.org/World/OpenPaperwork/paperwork/-/wikis/Contributing#virtual-env
