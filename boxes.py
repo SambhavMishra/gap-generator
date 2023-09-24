@@ -122,8 +122,8 @@ class box_and_bound():
                 ques += " " + i 
 
 
-        def table_data(quest):
-            if quest >= len(mcqs)+1:
+        def table_data(quest, last):
+            if quest > last:
                 return f'{space}'
             else:
                 line = f'<td>{space}{quest}{space}</td><td>'
@@ -137,6 +137,7 @@ class box_and_bound():
 
         num_columns = 3  
         num_rows = (len(gap_list) + num_columns - 1) // num_columns
+        last = len(gap_list)
 
         omrs = '<table border="1">'
 
@@ -144,7 +145,7 @@ class box_and_bound():
             omrs += '<tr>'
             for col in range(num_columns):
                 index = row + col * num_rows 
-                omrs += table_data(index + 1)
+                omrs += table_data(index + 1, last)
             omrs += '</tr>'
 
         omrs += "</table>"
