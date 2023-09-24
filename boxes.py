@@ -47,10 +47,14 @@ class box_and_bound():
 
     @staticmethod
     def create_omr_boxes(content, gap_list, extra_words):
-        if '' in extra_words:
-            extra_words.remove('')
+        # st.write(extra_words)
+        # if '' in extra_words:
+        #     st.write("'' is present in extra_words")
+        #     extra_words = extra_words.remove('')
+        #     st.write(f"extra_words has now become {extra_words}")
         mcqs = set(extra_words + gap_list)
         mcqs = list(mcqs)
+        mcqs = [i for i in mcqs if i != '']
         opts = mcqs.copy()
         random.shuffle(opts)
         correct_options = {
@@ -119,7 +123,7 @@ class box_and_bound():
 
 
         def table_data(quest):
-            if quest > len(mcqs)+1:
+            if quest >= len(mcqs)+1:
                 return f'{space}'
             else:
                 line = f'<td>{space}{quest}{space}</td><td>'
