@@ -2,6 +2,7 @@ import random
 import streamlit as st 
 import base64
 import streamlit as st 
+import math
 class box_and_bound():
     @staticmethod
     def create_boxes(content, gap_list):
@@ -46,6 +47,8 @@ class box_and_bound():
 
     @staticmethod
     def create_omr_boxes(content, gap_list, extra_words):
+        if '' in extra_words:
+            extra_words.remove('')
         mcqs = set(extra_words + gap_list)
         mcqs = list(mcqs)
         opts = mcqs.copy()
@@ -119,7 +122,6 @@ class box_and_bound():
             if quest > len(mcqs)+1:
                 return f'{space}'
             else:
-                # line = f'<td>{quest}{space}'
                 line = f'<td>{space}{quest}{space}</td><td>'
                 char = ord('a')
                 for i in range(len(mcqs)):
@@ -129,17 +131,22 @@ class box_and_bound():
                 return line
 
 
+        num_columns = 3  
+        num_rows = (len(gap_list) + num_columns - 1) // num_columns
+
         omrs = '<table border="1">'
-        for ch in range(0,len(mcqs),3):
-            line = f'<tr>{table_data(ch+1)}{table_data(ch+2)}{table_data(ch+3)}</tr>'
-            omrs += line
+
+        for row in range(num_rows):
+            omrs += '<tr>'
+            for col in range(num_columns):
+                index = row + col * num_rows 
+                omrs += table_data(index + 1)
+            omrs += '</tr>'
 
         omrs += "</table>"
         res += omrs + "<br/><br/>"
-
         res += omr_image
-
-        res +=ques 
+        res += ques
 
 
 
@@ -161,7 +168,7 @@ class box_and_bound():
 
         num_of_options = len(mcqs)
         block_1_origin_x = 72
-        question_per_column = character  // 3 + 1
+        question_per_column = math.ceil(len(gap_list)  / 3) 
 
         json = f'{{"pageDimensions": [ 550, 800 ],"bubbleDimensions": [ 16, 16 ],"preProcessors": [{{"name": "CropPage","options": {{"morphKernel": [ 10, 10 ]}}}}],"customLabels": {{"Roll_no": ["r1","r2"]}},"fieldBlocks": {{"Roll_no": {{"fieldType":"QTYPE_INT", "origin": [ 306, 238 ],    "fieldLabels": ["r1", "r2"],    "bubblesGap": 15,    "labelsGap": 15    }},    "MCQBlock1a1": {{    "fieldType": "QTYPE_MCQ{num_of_options}",    "origin": [ 72, 395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": [    "q1..{question_per_column}"]}},"MCQBlock1a2": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*15 + 18},    395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": ["q{question_per_column + 1}..{question_per_column * 2}"]}},"MCQBlock1a3": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*30 + 36},    395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": ["q{question_per_column * 2 + 1}..{question_per_column*3}"]}}}}}}'
         

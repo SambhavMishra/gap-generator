@@ -151,7 +151,7 @@ if st.session_state['page'] == 3:
     # df.to_csv('output.csv', index=False)
 
     def download_csv(dataframe):
-        csv = dataframe.to_csv(index=False)
+        csv = dataframe.to_csv(header=False, index=False)
         b64 = base64.b64encode(csv.encode()).decode()
         href = f'<button style="border:1px solid #909090; border-radius: 5px; font-size:24px; background-color: white;"><a href="data:file/csv;base64,{b64}" download="data.csv" style="text-decoration: none;">Download CSV</a></button>'
         st.markdown(href, unsafe_allow_html=True)
