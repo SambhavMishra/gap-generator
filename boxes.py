@@ -58,12 +58,21 @@ class box_and_bound():
         opts = mcqs.copy()
         random.shuffle(opts)
         correct_options = {
-            'question': [],
+            'question': [], 
             'answer': []
         }
 
+        
+        custom_css = """
+        <style>
+            @page {
+                margin: 2px; /* Set all margins to 0 */
+            }
+        </style>
+        """
 
-        res = '' 
+        # res = custom_css  + '<body style="border:2px solid black; height: vh;">' 
+        res = ''
         space = '<span style="display:inline; margin-left:6px;"></span>'
 
         
@@ -71,7 +80,7 @@ class box_and_bound():
         contents = file_.read()
         data_url = base64.b64encode(contents).decode("utf-8")
         file_.close()
-        omr_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:block; height:70px; width: 110%; margin-left: -5%;"/>'
+        omr_image = f'<img src="data:image/gif;base64,{data_url}"  alt="omr marker" style="display:block; height:70px; width: 100%;"/>'
         res += omr_image
 
 
@@ -129,7 +138,7 @@ class box_and_bound():
                 line = f'<td>{space}{quest}{space}</td><td>'
                 char = ord('a')
                 for i in range(len(mcqs)):
-                    l = f'<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}{chr(char+i)}{space}</p>'
+                    l = f'&nbsp;<p style="display: inline; border: 1px solid black; border-radius: 50%;">{space}{chr(char+i).upper()}{space}</p>'
                     line += l 
                 line += '</td>'
                 return line
@@ -168,16 +177,17 @@ class box_and_bound():
             for j in range(len(opts)):
                 if opts[j] == gap_list[i]:
                     correct_options['question'].append(f'q{i+1}')
-                    correct_options['answer'].append(chr(ord('a') + j))
+                    correct_options['answer'].append(chr(ord('a') + j).upper())
         st.session_state.correct_options = correct_options
 
         num_of_options = len(mcqs)
         block_1_origin_x = 72
         question_per_column = math.ceil(len(gap_list)  / 3) 
 
-        json = f'{{"pageDimensions": [ 550, 800 ],"bubbleDimensions": [ 16, 16 ],"preProcessors": [{{"name": "CropPage","options": {{"morphKernel": [ 10, 10 ]}}}}],"customLabels": {{"Roll_no": ["r1","r2"]}},"fieldBlocks": {{"Roll_no": {{"fieldType":"QTYPE_INT", "origin": [ 306, 238 ],    "fieldLabels": ["r1", "r2"],    "bubblesGap": 15,    "labelsGap": 15    }},    "MCQBlock1a1": {{    "fieldType": "QTYPE_MCQ{num_of_options}",    "origin": [ 72, 395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": [    "q1..{question_per_column}"]}},"MCQBlock1a2": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*15 + 18},    395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": ["q{question_per_column + 1}..{question_per_column * 2}"]}},"MCQBlock1a3": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*30 + 36},    395],"bubblesGap": 15,"labelsGap": 15,"fieldLabels": ["q{question_per_column * 2 + 1}..{question_per_column*3}"]}}}}}}'
+        json = f'{{"pageDimensions": [ 550, 800 ],"bubbleDimensions": [ 20, 20 ],"preProcessors": [{{"name": "CropPage","options": {{"morphKernel": [ 20, 20 ]}}}}],"customLabels": {{"Roll_no": ["r1","r2"]}},"fieldBlocks": {{"Roll_no": {{"fieldType":"QTYPE_INT", "origin": [ 304, 246 ],    "fieldLabels": ["r1", "r2"],    "bubblesGap": 14,    "labelsGap": 14    }},    "MCQBlock1a1": {{    "fieldType": "QTYPE_MCQ{num_of_options}",    "origin": [ 76, 392],"bubblesGap": 20,"labelsGap": 15,"fieldLabels": [    "q1..{question_per_column}"]}},"MCQBlock1a2": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*20 + 22},    392],"bubblesGap": 20,"labelsGap": 15,"fieldLabels": ["q{question_per_column + 1}..{question_per_column * 2}"]}},"MCQBlock1a3": {{"fieldType": "QTYPE_MCQ{num_of_options}","origin": [{block_1_origin_x + num_of_options*40 + 40},    392],"bubblesGap": 20,"labelsGap": 15,"fieldLabels": ["q{question_per_column * 2 + 1}..{question_per_column*3}"]}}}}}}'
         
         st.session_state.json = json 
 
+        # res += "</body>"
         result = res
         return result
